@@ -117,12 +117,12 @@ button:focus-visible { outline: 3px solid #bc7897; outline-offset: 3px; }
 .cake-photo-panel img { border: 2px solid #fff; border-radius: 5px; box-shadow: 0 2px 5px #ad718529; }
 .cake-photo-panel::before { content: ''; position: absolute; top: -3px; left: -1px; right: -1px; height: 17px; background: radial-gradient(ellipse at 50% 0, #fffdfb 66%, transparent 70%) 0 0 / 15px 20px repeat-x; z-index: 2; }
 .cake-photo-panel::after { content: ''; position: absolute; height: 9px; bottom: 0; left: 0; right: 0; background: radial-gradient(ellipse, #fffdfb 62%,#e5acc4 66%,transparent 72%) 0 0 / 11px 9px repeat-x; }
-.tier-1-top-disc, .tier-2-top-disc { width: 100%; height: auto; aspect-ratio: 1; top: -85px; transform: rotateX(90deg); border: 6px solid #fff9fc; box-shadow: 0 0 0 2px #efbfd1; z-index: auto; }
+.tier-1-top-disc, .tier-2-top-disc { width: 170px; height: 170px; aspect-ratio: auto; top: -85px; transform: rotateX(90deg); border: 6px solid #fff9fc; box-shadow: 0 0 0 2px #efbfd1; z-index: auto; }
 .tier-1-top-disc img { display: block; object-fit: cover; object-position: center 35%; }
 .tier-1-top-disc::after { display: block; content: ''; position: absolute; inset: 0; border: 5px dotted #fff; border-radius: 50%; }
-.tier-2-top-disc { top: -125px; border-width: 7px; }
-.tier-1-bottom-disc, .tier-2-bottom-disc { display: block; width: 100%; height: auto; aspect-ratio: 1; top: -10px; transform: rotateX(-90deg); border: 0; background: #f2c2d5; box-shadow: none; }
-.tier-2-bottom-disc { top: -40px; }
+.tier-2-top-disc { width: 250px; height: 250px; top: -125px; border-width: 7px; }
+.tier-1-bottom-disc, .tier-2-bottom-disc { display: block; width: 170px; height: 170px; aspect-ratio: auto; top: -10px; transform: rotateX(-90deg); border: 0; background: #f2c2d5; box-shadow: none; }
+.tier-2-bottom-disc { width: 250px; height: 250px; top: -40px; }
 .tier-1-bottom-disc img, .tier-2-bottom-disc img { display: none; }
 .cake-plate { top: 70px; left: -10px; width: 300px; height: 300px; transform: rotateX(90deg); border-radius: 50%; box-shadow: 0 0 0 2px #e8c3d3; }
 .bunny-topper { top: -31px; left: 76px; width: 66px; height: 85px; transform: translateZ(13px); z-index: auto; }
@@ -199,3 +199,22 @@ button:focus-visible { outline: 3px solid #bc7897; outline-offset: 3px; }
 @keyframes littleFlame { from { transform: rotate(-5deg) scale(.95,1); } to { transform: rotate(4deg) scale(1,1.08); } }
 .smoke-particle { width: 6px; height: 6px; opacity: .6; background: #cdbac355; }
 @media (prefers-reduced-motion: reduce) { .candle-ring .candle-flame { animation: none; } }
+
+/* Explicit circular clipping on rotated surfaces, including iOS WebKit. */
+.tier-1-top-disc, .tier-2-top-disc,
+.tier-1-bottom-disc, .tier-2-bottom-disc, .cake-plate {
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-clip-path: circle(50% at 50% 50%);
+  clip-path: circle(50% at 50% 50%);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.tier-1-top-disc img {
+  display: block;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  -webkit-clip-path: circle(50% at 50% 50%);
+  clip-path: circle(50% at 50% 50%);
+}
